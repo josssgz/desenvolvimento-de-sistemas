@@ -1,36 +1,36 @@
-<h2>Cadastro de Produtos (POST)</h2>
-
-<form action="" method="post">
-    Produto: <input type="text" name="produto"><br>
-    Preço: <input type="text" name="preco"><br>
-    Quantidade: <input type="text" name="quantidade"><br>
-    <input type="submit" value="Calcular">
-</form>
-
 <?php 
 
     function varValida($variavel){
         return (!is_null($variavel) && !empty($variavel));
     }
 
-    function calcularEFormatarEstoque(string $produto, float $valor, float $quant){
-
+    function calcularEFormatarEstoque(string $produto, float $valor, float $quantidade){
+        $total = $valor * $quantidade;
+        $infoProduto["total"] = number_format($total, 2, ",", ".");
+        $infoProduto["preco"] = number_format($valor, 2, ",", ".");
+        $infoProduto["quantidade"] = number_format($quantidade, 0, ",", ".");
+        $infoProduto["valor"] = number_format($total, 2, ",", ".");
+        $infoProduto["nome"] = ucwords($produto);
+        return $infoProduto;
     }
 
-    if($_SERVER["REQUEST_METHOD"] === "POST"){
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // echo "<h3>Enviado</h3>";
         $produto = $_POST["produto"] ?? null;
         $preco = $_POST["preco"] ?? null;
         $quantidade = $_POST["quantidade"] ?? null;
 
-        if(varValida($produto) && varValida($preco) && varValida($quantidade)){
-            echo "<h3>sucesso</h3>";
+        if (varValida($produto) && varValida($preco) && varValida($quantidade)) {
+            $preco = (float) $preco;
+            $quantidade = (float) $quantidade;
+
+            $info = calcularEFormatarEstoque($produto, $preco, $quantidade);
+            include "infoProduto.php";
+        } else {
+            echo "<h3>Erro, digite os valores!</h3>";
+            include "formulario.php";
         }
-        else{
-            echo "<h3>erro</h3>";
-        }
-    }
-    else{
-        echo "<h3>Digite os valores...</h3>";
+    } else {
+        include "formulario.php";
     }
 ?>
