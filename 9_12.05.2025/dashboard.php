@@ -21,6 +21,7 @@
     echo "<h3>Tarefas de $usuario:</h3>";
     while($tarefa = $resp->fetch_object()){
         echo "<br> [ " . $tarefa->id . " ] - " . $tarefa->texto . " <a href='apagar-tarefa.php?id=" . $tarefa->id . "' onclick=\"return confirm('Tem certeza que deseja apagar esta tarefa?');\">[apagar]</a>";
+        echo "[<a href='editar-tarefa.php?id=$tarefa->id'>editar</a>]";
     }
 
 ?>
